@@ -26,7 +26,7 @@ Place RiboAbacus.c in the same folder of the .txt file that will be used as inpu
 ********* Compile and execute RiboAbacus *********
 
 
-Using a Linux command-line interface: open a command shell window and type the following line to obtain the executable file
+Using a Linux command-line interface: open a command shell window and type the following line to generate the executable file (that will be placed in the same folder of RiboAbacus.c)
 
 > gcc -o RiboAbacus RiboAbacus.c -lm
 
@@ -44,7 +44,7 @@ to compile RiboAbacus.
 ********* Input file *********
 
 
-The input file should contain for each transcript TWO lines: the first reporting (in this order) the gene ID, the transcript level, the protein amount, the protein ID and the transcript ID; the second reporting the mRNA sequence. An example:
+The input file must contain for each transcript TWO lines: the first reporting (in this order) the gene ID, the transcript level, the protein amount, the protein ID and the transcript ID; the second reporting the mRNA sequence. An example:
 
 ENSG00000000971	2101.85	150.60	ENSP00000356399	ENST00000367429
 ATGAGACTTCTAGCAAAGATTATTTGCCTTATGTTATGGGCTATTTGTGTAGCAGAAGATTGCAATGAACTTCCTCCAAGAAGAAATACAGAAATTCTGACAGGTTCCTGGTCTGACCAAACATATCCAGAAGGCACCCAGGCTATCTATAAATGCCGCCCTGGATATAGATCTCTTGGAAATGTAATAATGGTATGCAGGAAGGGAGAATGGGTTGCTCTTAATCCATTAAGGAAATGTCAGAAAAGGCCCTGTGGACATCCTGGAGATACTCCTTTTGGTACTTTTACCCTTACAGGAGGAAATGTGTTTGAATATGGTGTAAAAGCTGTGTATACATGTAATGAGGGGTATCAATTGCTAGGTGAGATTAATTACCGTGAATGTGACACAGATGGATGGA.......
@@ -55,7 +55,7 @@ ATGCTGCTGCACCTGTGTAGTGTGAAGAATCTGTACCAGAACAGGTTTTTAGGCCTGGCCGCCATGGCGTCTCCTTCTAG
 
 
 
-Note that if the protein amounts are not available the entire corresponding column could be omitted. In this case, in the variable PROTEIN_INPUT (see the "user definition part" in RiboAbacus.c) has to be set equal to 0.
+Note that if the protein amounts are not available, the corresponding values could be omitted (for ALL the mRNAs). In this case, in the variable PROTEIN_INPUT (see the "user definition part" in RiboAbacus.c) has to be set equal to 0.
 
 
 
