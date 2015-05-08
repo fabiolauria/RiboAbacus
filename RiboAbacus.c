@@ -234,8 +234,6 @@ int b, taxmin=1, taxmax=8192, min_interval=8, m[min_interval+1], B[min_interval+
 char divide_v[l_max_tr][4], tr[l_max], info[30];
 float division_values[l_max_tr], sum_rib_onecodon[l_max_tr], Uv[l_max_tr], chat, ctilde, control, k1=20, k2=100, k2r=79, k3=207, k3r=3.45, k4=100, k5=638, k6=15, k7=20, k8=150, k8r=140, k9=250, Mr, G=30, L=10, cai_vec[l_max_tr], CAIr, CAIt ,n_rib=0, GCr, GCt, n_rib_ramp, sdr=((100-stax)/100);
 
-//cu_vec[64]={17.6, 15.2, 12.2, 10.6, 20.3, 17.7, 15.3, 12.6, 7.7, 12.2, 1.0, 1.6, 12.9, 4.4, 0.8, 13.2, 13.2, 17.5, 10.9, 4.5, 19.6, 19.8, 15.1, 10.4, 7.2, 16.9, 12.3, 6.2, 39.6, 6.9, 34.2, 11.4, 16.0, 13.1, 17.0, 12.1, 20.8, 18.9, 19.1, 19.5, 7.5, 15.1, 24.4, 12.2, 22.0, 6.1, 31.9, 12.0, 11.0, 18.4, 21.8, 10.8, 14.5, 27.7, 25.1, 22.2, 7.1, 15.8, 29.0, 16.5, 28.1, 7.4, 39.6, 16.5};
-
 chat=((k3r+k4)*k9)/(k3*k4);
 ctilde=((k2r/k3)+((k2r*k3r)/(k3*k4))+1)*k9;
 
@@ -252,6 +250,7 @@ for(i=0; i<(n_tr/2); i++)
 
 	//scanning of the input file to acquire the trnascripts copy number Mr and the mRNA sequences tr[] 
 	for(z=0; z<read; z++)
+
 		{
 		if(z%read!=1 && z%read!=read-1){fscanf(fin, "%s", &info); fprintf(fout, "%s\t", info);}
 		else
