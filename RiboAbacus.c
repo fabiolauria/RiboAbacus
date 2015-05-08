@@ -6,12 +6,79 @@
 
 
 // user definition part
-#define PROTEIN_INPUT   1	//assumes only values 0 and 1: 0 if the input file does not contain data related to protein amounts, 1 otherwise
+#define CODON_USAGE	0	//specifies the organism codon usage bias: 1 for Homo Sapiens, 2 for Mus Musculus, 3 for Saccharomyces Cerevisiae and 0 if an input 					  file with custom codon usage is given by the user
+#define PROTEIN_INPUT   0	//assumes only values 0 and 1: 0 if the input file does not contain data related to protein amounts, 1 otherwise
 #define RAMP_HYOUTHESIS	1	//assumes only values 0 and 1: 0 if the ramp hypothesis is not considered, 1 otherwise
-#define RAMP_LENGTH     50	//specifies the ramp length (measured in codons)
-#define SLOWDOWN_RATE   70	//specifies the ribosome slowdown rate on the ramp (it is a percentage: for example, 70 means that the speed of the ribosomes is reduced by 70%)
-#define WIDTH_BIN       150	//specifies the width of the bin of the mRNA lengths distribution
+#define RAMP_LENGTH     50	//specifies the ramp length (measured in codons). If RAMP_LENGTH is set equal to 0, RAMP_LENGTH will not affect the simulation
+#define SLOWDOWN_RATE   70	//specifies the ribosome slowdown rate on the ramp (it is a percentage: for example, 70 means that the speed of the ribosomes is 					  reduced by 70%). If RAMP_LENGTH is set equal to 0, SLOWDOWN_RATE will not affect the simulation
+#define WIDTH_BIN       150	//specifies the width of the bin of the mRNA length distribution
 
+
+
+
+
+
+//function to assign the specified codon usage to a vector
+void codon_usage(int c, float cu_vec[])
+	{
+		FILE* culist;
+		int i, j;
+		float cuinputvalues;
+		char cuinputcds[10];
+		char cucds[64][4]={"UUU", "UCU", "UAU", "UGU", "UUC", "UCC", "UAC", "UGC", "UUA", "UCA", "UAA", "UGA", "UUG", "UCG", "UAG", "UGG", "CUU", "CCU", "CAU", "CGU", "CUC", "CCC", "CAC", "CGC", "CUA", "CCA", "CAA", "CGA", "CUG", "CCG", "CAG", "CGG", "AUU", "ACU", "AAU", "AGU", "AUC", "ACC", "AAC", "AGC", "AUA", "ACA", "AAA", "AGA", "AUG", "ACG", "AAG", "AGG", "GUU", "GCU", "GAU", "GGU", "GUC", "GCC", "GAC", "GGC", "GUA", "GCA", "GAA", "GGA", "GUG", "GCG", "GAG", "GGG"};
+		float cu_hs[64]={17.6, 15.2, 12.2, 10.6, 20.3, 17.7, 15.3, 12.6, 7.7, 12.2, 1.0, 1.6, 12.9, 4.4, 0.8, 13.2, 13.2, 17.5, 10.9, 4.5, 19.6, 19.8, 15.1, 10.4, 7.2, 16.9, 12.3, 6.2, 39.6, 6.9, 34.2, 11.4, 16.0, 13.1, 17.0, 12.1, 20.8, 18.9, 19.1, 19.5, 7.5, 15.1, 24.4, 12.2, 22.0, 6.1, 31.9, 12.0, 11.0, 18.4, 21.8, 10.8, 14.5, 27.7, 25.1, 22.2, 7.1, 15.8, 29.0, 16.5, 28.1, 7.4, 39.6, 16.5};
+		float cu_mm[64]={17.2, 16.2, 12.2, 11.4, 21.8, 18.1, 16.1, 12.3, 6.7, 11.8, 1.0, 1.6, 13.4, 4.2, 0.8, 12.5, 13.4, 18.4, 10.6, 4.7, 20.2, 18.2, 15.3, 9.4, 8.1, 17.3, 12.0, 6.6, 39.5, 6.2, 34.1, 10.2, 15.4, 13.7, 15.6, 12.7, 22.5, 19.0, 20.3, 19.7, 7.4, 16.0, 21.9, 12.1, 22.8, 5.6, 33.6, 12.2, 10.7, 20.0, 21.0, 11.4, 15.4, 26.0, 26.0, 21.2, 7.4, 15.8, 27.0, 16.8, 28.4, 6.4, 39.4, 15.2};
+		float cu_sc[64]={26.1, 23.5, 18.8, 8.1, 18.4, 14.2, 14.8, 4.8, 26.2, 18.7, 1.1, 0.7, 27.2, 8.6, 0.5, 10.4, 12.3, 13.5, 13.6, 6.4, 5.4, 6.8, 7.8, 2.6, 13.4, 18.3, 27.3, 3.0, 10.5, 5.3, 12.1, 1.7, 30.1, 20.3, 35.7, 14.2, 17.2, 12.7, 24.8, 9.8, 17.8, 17.8, 41.9, 21.3, 20.9, 8.0, 30.8, 9.2, 22.1, 21.2, 37.6, 23.9, 11.8, 12.6, 20.2, 9.8, 11.8, 16.2, 45.6, 10.9, 10.8, 6.2, 19.2, 6.0};
+
+		if(c==0)
+		{
+			culist = fopen ("cu.txt", "r");
+			if(culist==NULL)
+			{
+				printf("\nError: codon usage list does not exist in the current directory\n\n");
+			}
+			else
+			{	
+				for(i=0; i<64; i++)
+				{
+					fscanf(culist, "%s", &cuinputcds); //printf("%s\t", cuinputcds);
+					fscanf(culist, "%f", &cuinputvalues); //printf("%f\n", cuinputvalues);
+					for(j=0; j<64; j++)
+					{
+						if(strcmp(cuinputcds, cucds[j])==0)
+						{
+							cu_vec[j]=cuinputvalues;
+						}
+					}
+				}			}
+		}
+		else
+		{
+			if(CODON_USAGE==1)
+			{
+				for(i=0; i<64; i++)
+				{
+					cu_vec[i]=cu_hs[i];
+				}
+			}
+			if(CODON_USAGE==2)
+			{
+				for(i=0; i<64; i++)
+				{
+					cu_vec[i]=cu_mm[i];
+				}
+			}
+			if(CODON_USAGE==3)
+			{
+				for(i=0; i<64; i++)
+				{
+					cu_vec[i]=cu_sc[i];
+				}
+			}
+		}
+
+		
+	}
 
 
 
@@ -159,13 +226,15 @@ float sum_rib_ramp(float sum_rib_onecodon[], int len_trip, float ramp)
 
 
 //principal function: to obtain the number of ribosomes per trancript and other information
-void output(FILE *fin, FILE *fout, int nline, float stax, int ramp, int ramp_presence, int protein)
+void output(FILE *fin, FILE *fout, float cu_vec[], int nline, float stax, int ramp, int ramp_presence, int protein)
 {
 int i, k, j, z, wl, read;
 int n_tr=nline, l_max=100000, l_max_tr=l_max/3, len, len_trip;
 int b, taxmin=1, taxmax=8192, min_interval=8, m[min_interval+1], B[min_interval+1], tmn, tmx, tmd, mtmd, h;
 char divide_v[l_max_tr][4], tr[l_max], info[30];
-float division_values[l_max_tr], sum_rib_onecodon[l_max_tr], Uv[l_max_tr], chat, ctilde, control, k1=20, k2=100, k2r=79, k3=207, k3r=3.45, k4=100, k5=638, k6=15, k7=20, k8=150, k8r=140, k9=250, Mr, G=30, L=10, cu_vec[64]={17.6, 15.2, 12.2, 10.6, 20.3, 17.7, 15.3, 12.6, 7.7, 12.2, 1.0, 1.6, 12.9, 4.4, 0.8, 13.2, 13.2, 17.5, 10.9, 4.5, 19.6, 19.8, 15.1, 10.4, 7.2, 16.9, 12.3, 6.2, 39.6, 6.9, 34.2, 11.4, 16.0, 13.1, 17.0, 12.1, 20.8, 18.9, 19.1, 19.5, 7.5, 15.1, 24.4, 12.2, 22.0, 6.1, 31.9, 12.0, 11.0, 18.4, 21.8, 10.8, 14.5, 27.7, 25.1, 22.2, 7.1, 15.8, 29.0, 16.5, 28.1, 7.4, 39.6, 16.5}, cai_vec[l_max_tr], CAIr, CAIt ,n_rib=0, GCr, GCt, n_rib_ramp, sdr=((100-stax)/100);
+float division_values[l_max_tr], sum_rib_onecodon[l_max_tr], Uv[l_max_tr], chat, ctilde, control, k1=20, k2=100, k2r=79, k3=207, k3r=3.45, k4=100, k5=638, k6=15, k7=20, k8=150, k8r=140, k9=250, Mr, G=30, L=10, cai_vec[l_max_tr], CAIr, CAIt ,n_rib=0, GCr, GCt, n_rib_ramp, sdr=((100-stax)/100);
+
+//cu_vec[64]={17.6, 15.2, 12.2, 10.6, 20.3, 17.7, 15.3, 12.6, 7.7, 12.2, 1.0, 1.6, 12.9, 4.4, 0.8, 13.2, 13.2, 17.5, 10.9, 4.5, 19.6, 19.8, 15.1, 10.4, 7.2, 16.9, 12.3, 6.2, 39.6, 6.9, 34.2, 11.4, 16.0, 13.1, 17.0, 12.1, 20.8, 18.9, 19.1, 19.5, 7.5, 15.1, 24.4, 12.2, 22.0, 6.1, 31.9, 12.0, 11.0, 18.4, 21.8, 10.8, 14.5, 27.7, 25.1, 22.2, 7.1, 15.8, 29.0, 16.5, 28.1, 7.4, 39.6, 16.5};
 
 chat=((k3r+k4)*k9)/(k3*k4);
 ctilde=((k2r/k3)+((k2r*k3r)/(k3*k4))+1)*k9;
@@ -774,7 +843,7 @@ void graph(FILE *fin, FILE *out, int nline, int protein)
 
 
 
-//function to generate the data for length distribution with specific width of the bins
+//function to generate the data for length distribution with specified width of the bins
 void graph_length(FILE *fin, FILE *out, int nline, int protein, int fixbin)
 {
 	printf("%i\n", nline);
@@ -819,12 +888,12 @@ void graph_length(FILE *fin, FILE *out, int nline, int protein, int fixbin)
 				count[i]=0;
 			}
 			
-		fprintf(out, "len/tr\tevents\tfreq_int\n");		
+		fprintf(out, "length\tevents\tfreq_int\n");		
 		for(i=0; i<ncount; i++)
 			{	
 				for(j=0; j<ntrans; j++)
 					{
-						if(len_v[j]<-50+(i+1)*bin && len_v[j]>=-50+i*bin)
+						if(len_v[j]<(i+1)*bin && len_v[j]>=i*bin)
 							{
 								count[i]=count[i]+intens_v[j];
 							}
@@ -849,79 +918,80 @@ void graph_length(FILE *fin, FILE *out, int nline, int protein, int fixbin)
 int main()
 {
 
-int n;
+	int n;
+	float cu_vec[64];
 
+	FILE* fin;
+	FILE* out;
 
-FILE* fin;
-FILE* out;
+	fin = fopen ("input.txt", "r");
+	
+	if(fin==NULL)
+	{
+		printf("\nError: transcript list does not exist in the current directory\n\n");
+	}
+	else
+	{
 
-fin = fopen ("input.txt", "r");
+		//to assign the specified codon usage to the vector cu_vec
+		codon_usage(CODON_USAGE, cu_vec);
+	
+	
 
-
-
-if(fin==NULL)
-{
-printf("\nError\n\n");
-}
-else
-{
-
-
-
-//to count the number of lines of the input file (i.e. twice the number of transcripts under study)
-n=nline(fin);
-fclose(fin);
-
-
-
-//main function: to obtain the number of ribosome per transcript and other information (also unavailable and wrong sequences are listed) with or without the ramp hypothesis
-fin = fopen ("input.txt", "r");
-out = fopen ("temporary.txt", "w");
-output(fin, out, n, SLOWDOWN_RATE, RAMP_LENGTH, RAMP_HYOUTHESIS, PROTEIN_INPUT);
-fclose(out);
-fclose(fin);
+		//to count the number of lines of the input file (i.e. twice the number of transcripts under study)
+		n=nline(fin);
+		fclose(fin);
 
 
 
-//to eliminate results associated with unavailable or wrong sequences
-fin = fopen ("temporary.txt", "r"); 
-n=nline(fin);
-fclose(fin);
-
-fin = fopen ("temporary.txt", "r");
-out = fopen ("results.txt", "w");
-correctline(fin, out, n, PROTEIN_INPUT);
-fclose(out);
-fclose(fin);
+		//main function: to obtain the number of ribosome per transcript and other information (also unavailable and wrong sequences are listed) with or without the ramp hypothesis
+		fin = fopen ("input.txt", "r");
+		out = fopen ("temporary.txt", "w");
+		output(fin, out, cu_vec, n, SLOWDOWN_RATE, RAMP_LENGTH, RAMP_HYOUTHESIS, PROTEIN_INPUT);
+		fclose(out);
+		fclose(fin);
 
 
 
-//to generate the data for number of ribosome per transcript distributions
-fin = fopen ("results.txt", "r"); 
-n=nline(fin);
-fclose(fin);
+		//to eliminate results associated with unavailable or wrong sequences
+		fin = fopen ("temporary.txt", "r"); 
+		n=nline(fin);
+		fclose(fin);
 
-fin = fopen ("results.txt", "r"); 
-out = fopen ("ribosome_per_transcript_distribution.txt", "w");
-graph(fin, out, n, PROTEIN_INPUT);
-fclose(out);
-fclose(fin);
-
-
-
-//to generate the data for length distribution with specific width of the bins
-fin = fopen ("results.txt", "r"); 
-n=nline(fin);
-fclose(fin);
-
-fin = fopen ("results.txt", "r"); 
-out = fopen ("length_distribution.txt", "w");
-graph_length(fin, out, n, PROTEIN_INPUT, WIDTH_BIN);
-fclose(out);
-fclose(fin);
-
-}
+		fin = fopen ("temporary.txt", "r");
+		out = fopen ("results.txt", "w");
+		correctline(fin, out, n, PROTEIN_INPUT);
+		fclose(out);
+		fclose(fin);
 
 
-return 0;
+
+		//to generate the data for number of ribosome per transcript distributions
+		fin = fopen ("results.txt", "r"); 
+		n=nline(fin);
+		fclose(fin);
+
+		fin = fopen ("results.txt", "r"); 
+		out = fopen ("ribosome_per_transcript_distribution.txt", "w");
+		graph(fin, out, n, PROTEIN_INPUT);
+		fclose(out);
+		fclose(fin);
+
+
+
+		//to generate the data for length distribution with specified width of the bins
+		fin = fopen ("results.txt", "r"); 
+		n=nline(fin);
+		fclose(fin);
+	
+		fin = fopen ("results.txt", "r"); 
+		out = fopen ("length_distribution.txt", "w");
+		graph_length(fin, out, n, PROTEIN_INPUT, WIDTH_BIN);
+		fclose(out);
+		fclose(fin);
+
+	}
+
+
+	return 0;
 }
