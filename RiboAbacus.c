@@ -81,8 +81,6 @@ void codon_usage(int c, float cu_vec[])
 	}
 
 
-
-
 //function to count the number of lines of a file
 int nline(FILE *fin)
 	{
@@ -99,8 +97,6 @@ int nline(FILE *fin)
 	}
 
 
-
-
 //function to find the maximum of 6 values
 float maximum(float a, float b, float c, float d, float e, float f)
 	{
@@ -111,8 +107,6 @@ float maximum(float a, float b, float c, float d, float e, float f)
 		if(e>=a && e>=b && e>=c && e>=d && e>=f) return e;
 		if(f>=a && f>=b && f>=c && f>=d && f>=e) return f;
 	}
-
-
 
 
 //functions to solve the system: 
@@ -193,8 +187,6 @@ float sum_rib_one_codon(float kS, float U, float k1, float k2, float k4, float k
 	}
 
 
-
-
 //function to compute the number of ribosomes on the transcript 
 float sum_rib_transcript(float sum_rib_onecodon[], float length)
 	{
@@ -206,8 +198,6 @@ float sum_rib_transcript(float sum_rib_onecodon[], float length)
 			}
 		return totsum;
 	}
-
-
 
 
 //function to compute the number of ribosomes on the ramp
@@ -265,9 +255,7 @@ for(i=0; i<(n_tr/2); i++)
 			fscanf(fin, "%s", &tr);
 			len=strlen(tr);
 			
-			
-			
-			
+
 			//detection of problematic transcripts (unavailable, wrong or too long sequences, unusual start codons)
 			wl=0;
 			for(k=0; k<len; k++)
@@ -294,9 +282,7 @@ for(i=0; i<(n_tr/2); i++)
 					GCr=0;
 					GCt=0;
 					
-					
-					
-					
+
 					//division of the transcript in triplets and association of the correspondent codon usage bias value and of a number suitable for the computation of the CAI
 					for(k=0; k<len; k=k+3)
 						{
@@ -305,6 +291,12 @@ for(i=0; i<(n_tr/2); i++)
 							divide_v[k/3][2]=tr[k+2];
 						}
 					len_trip=len/3;
+
+					if(ramp>=len_trip)
+					{
+						ramp=len_trip-2;
+					}
+
 					for(k=0; k<len_trip; k++)
 						{
 							if(divide_v[k][0]=='G')
@@ -436,8 +428,8 @@ for(i=0; i<(n_tr/2); i++)
 								division_values[k]=division_values[k]/1000;
 									
 						}
-						
 							
+						//commento a caso
 						
 						//computation of the transcript CAI 
 						for(k=0; k<len_trip; k++)
@@ -445,8 +437,6 @@ for(i=0; i<(n_tr/2); i++)
 								CAIt=CAIt+log(cai_vec[k]);
 							}
 						CAIt=CAIt/len_trip;
-						
-						
 						
 						
 						//computation of the ramp CAI 
@@ -458,9 +448,7 @@ for(i=0; i<(n_tr/2); i++)
 									}
 								CAIr=CAIr/ramp;
 							}
-											
-						
-						
+							
 						
 						//computation of the transcript percentage of GC content
 						for(k=0; k<len; k++)
@@ -471,8 +459,6 @@ for(i=0; i<(n_tr/2); i++)
 									}
 							}
 						GCt=(GCt*100)/len;
-						
-						
 						
 
 						//computation of the ramp percentage of GC content 
@@ -489,8 +475,6 @@ for(i=0; i<(n_tr/2); i++)
 							}								
 							
 							
-							
-							
 					//initialization of the number of ribosomes at each codon and definition of the range of values for the ribosome exit fluxes used in the following procedure				
 					for(k=0; k<len_trip+L-1; k++)
 						{
@@ -498,9 +482,7 @@ for(i=0; i<(n_tr/2); i++)
 						}
 					tmx=taxmax;
 					tmn=taxmin-1;
-					tmd=(tmx-tmn)/2;
-								
-								
+					tmd=(tmx-tmn)/2;	
 							
 								
 					//computation of both the number of ribosomes and the translocation probability for each codon for a set of exit flux values (the one in the middle of the range). At each step the exit flux range is halved (unitll it reaches a minimum number of elements) depending on the value that satisfied the imposed conditions. The computations are differentiated according to the presence of the ramp: if the ramp hypothesis is taken into account some kinetic constants are multiplied by the fixed slowdown rate (sdr) for the first (chosen ramp length) position in order to decrease the speed of all the reactions.		
@@ -561,6 +543,7 @@ for(i=0; i<(n_tr/2); i++)
 								{
 									tmn=tmd;
 									tmx=tmx;
+
 									tmd=tmn+(tmx-tmn)/2;
 									
 								}
@@ -571,8 +554,6 @@ for(i=0; i<(n_tr/2); i++)
 									tmd=(tmx-tmn)/2;
 								}
 						}
-						
-						
 						
 						
 					//computation of both the number of ribosomes and the translocation probability for each codon for each value of the left range of exit fluxes. The computations are differentiated according to the presence of the ramp: if the ramp hypothesis is taken into account some kinetic constants are multiplied by the fixed slowdown rate (sdr) for the first (chosen ramp length) position in order to decrease the speed of all the reactions.	
@@ -652,8 +633,6 @@ for(i=0; i<(n_tr/2); i++)
 						}
 						
 						
-						
-						
 					//selection of the maximum ribosome exit flux that satisfies all the conditions and computation of both the number of ribosomes and the translocation probability for each codon using that value. The computations are differentiated according to the presence of the ramp: if the ramp hypothesis is taken into account some kinetic constants are multiplied by the fixed slowdown rate (sdr) for the first (chosen ramp length) position in order to decrease the speed of all the reactions.		
 					h=0;
 					for(k=0; k<=min_interval; k++)
@@ -704,8 +683,6 @@ for(i=0; i<(n_tr/2); i++)
 						}
 						
 						
-						
-						
 					//writing on the output file
 					if(h>1)
 						{
@@ -721,8 +698,6 @@ for(i=0; i<(n_tr/2); i++)
 		}		
 }
 }
-
-
 
 
 //function to eliminate results associated with unavailable or wrong sequences
@@ -771,8 +746,6 @@ void correctline (FILE *fin, FILE *fout, int nline, int protein)
 		}
 	}	
 }
-
-
 
 
 //function to generate the data for number of ribosome per transcript distributions
@@ -838,8 +811,6 @@ void graph(FILE *fin, FILE *out, int nline, int protein)
 			}
 	}
 }
-
-
 
 
 //function to generate the data for length distribution with specified width of the bins
@@ -909,11 +880,6 @@ void graph_length(FILE *fin, FILE *out, int nline, int protein, int fixbin)
 }
 
 
-
-
-
-
-
 int main()
 {
 
@@ -936,11 +902,9 @@ int main()
 		codon_usage(CODON_USAGE, cu_vec);
 	
 	
-
 		//to count the number of lines of the input file (i.e. twice the number of transcripts under study)
 		n=nline(fin);
 		fclose(fin);
-
 
 
 		//main function: to obtain the number of ribosome per transcript and other information (also unavailable and wrong sequences are listed) with or without the ramp hypothesis
@@ -949,7 +913,6 @@ int main()
 		output(fin, out, cu_vec, n, SLOWDOWN_RATE, RAMP_LENGTH, RAMP_HYOUTHESIS, PROTEIN_INPUT);
 		fclose(out);
 		fclose(fin);
-
 
 
 		//to eliminate results associated with unavailable or wrong sequences
@@ -964,7 +927,6 @@ int main()
 		fclose(fin);
 
 
-
 		//to generate the data for number of ribosome per transcript distributions
 		fin = fopen ("results.txt", "r"); 
 		n=nline(fin);
@@ -975,7 +937,6 @@ int main()
 		graph(fin, out, n, PROTEIN_INPUT);
 		fclose(out);
 		fclose(fin);
-
 
 
 		//to generate the data for length distribution with specified width of the bins
