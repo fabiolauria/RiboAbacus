@@ -102,35 +102,35 @@ RiboAbacus creates 3 output:
 
      The following lines show an example of the organization of the file (ramp hypothesis: ramp length 50 codons, ribosome slowdown rate 70%):
 
-     gene ID	mRNA level	protein amount	protein ID	transcript ID	"transcript
-     length"	# ribosomes	"# ribosome
-     (ramp)"	GC%	"GC%
-     (ramp)"	CAI	"CAI
-     (ramp)"	"ribosome
-     occupancy"	"translation
-     efficiency"	exit flux
-     ENSG00000000971	2101.850098	150.6	ENSP00000356399	ENST00000367429	3696	32	3	39.826839	34	0.72072	0.719603	25.802345	547.0099281	44
-     ENSG00000004455	3493.550049	64600.76	ENSP00000346921	ENST00000354858	720	8	3	52.361111	62	0.79733	0.791008	31.911211	2287.06706	82
-     ENSG00000006712	8962.950195	182.54	ENSP00000221265	ENST00000221265	1596	15	3	54.699249	72	0.832251	0.887574	27.7791	2894.230964	221
+          gene ID	mRNA level	protein amount	protein ID	transcript ID	"transcript
+          length"	# ribosomes	"# ribosome
+          (ramp)"	GC%	"GC%
+          (ramp)"	CAI	"CAI
+          (ramp)"	"ribosome
+          occupancy"	"translation
+          efficiency"	exit flux
+          ENSG00000000971	2101.850098	150.6	ENSP00000356399	ENST00000367429	3696	32	3	39.826839	34	0.72072	0.719603	25.802345	547.0099281	44
+          ENSG00000004455	3493.550049	64600.76	ENSP00000346921	ENST00000354858	720	8	3	52.361111	62	0.79733	0.791008	31.911211	2287.06706	82
+          ENSG00000006712	8962.950195	182.54	ENSP00000221265	ENST00000221265	1596	15	3	54.699249	72	0.832251	0.887574	27.7791	2894.230964	221
 
 2.   A file containing the frequencies of the number of ribosomes per transcript predicted by the model, useful to produce a number of ribosomes per transcript distribution that takes into account the transcript level. The following lines show an example of the organization of the file
 
-     rib/tr	events	freq_int
-     0	0	0.000000
-     1	0	0.000000
-     2	1619	0.006346
-     3	1605	0.006291
-     4	2097	0.008217
-     5	12859	0.050386
-     ...
+               rib/tr	events	freq_int
+               0	0	0.000000
+               1	0	0.000000
+               2	1619	0.006346
+               3	1605	0.006291
+               4	2097	0.008217
+               5	12859	0.050386
+               ...
 
 3.   A file containing information useful to generate a transcript length distribution with specified width of the bins and that takes into account the transcript level. The following lines show an example of the organization of the file:
 
-     length	events	freq_int
-     0	544	0.000710
-     150	1562	0.002040
-     300	6784	0.008862
-     450	8545	0.011163
-     600	7378	0.009639
-     650	8654	0.011306
-     ...
+          length	events	freq_int
+          0	544	0.000710
+          150	1562	0.002040
+          300	6784	0.008862
+          450	8545	0.011163
+          600	7378	0.009639
+          650	8654	0.011306
+          ...
