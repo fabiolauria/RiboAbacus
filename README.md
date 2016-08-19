@@ -1,38 +1,24 @@
+# RiboAbacus    
 
-
-
-		********************************************
-
-****************************     RIBOABACUS     ****************************
-
-		********************************************
-
-
-
-
-********* Description *********
-
+### Description
 
 RiboAbacus is a computational tool that, given the sequence and the abundance of a transcript, provides estimation of the number of ribosomes per mRNA and transcript-specific translation efficiencies.
 
+### Reference
 
+Please cite the following article when using `RiboAbacus`:
 
+Lauria F, Tebaldi T, Lunelli L, Struffi P, Gatto P, Pugliese A, Brigotti M, Montanaro L, Ciribilli Y, Inga A, Quattrone A, Sanguinetti G, Viero G. ***RiboAbacus: a model trained on polyribosome images predicts ribosome density and translational efficiency from mammalian transcriptomes.*** *Nucleic Acids Res. 2015 Dec 15;43(22):e153*
 
-********* Before starting *********
-
+### Before starting
 
 Place RiboAbacus.c in the same folder of the .txt file(s) that will be used as input (see below for more details on the input files).
 
-
-
-
-********* Compile and execute RiboAbacus *********
-
+### Compile and execute RiboAbacus
 
 Using a Linux command-line interface: open a bash shell and type the following line to compile RiboAbacus.c and generate the executable file (that will be placed in the same folder of RiboAbacus.c)
 
      gcc -o RiboAbacus RiboAbacus.c -lm
-
 
 then type
 
@@ -41,11 +27,7 @@ then type
 
 to run RiboAbacus.
 
-
-
-
-********* Settings *********
-
+### Settings
 
 To set RiboAbacus options, an "user definition part" is present in RiboAbacus.c. The user can modified the following parameters:
 
@@ -57,11 +39,7 @@ RAMP_LENGTH 	   --->	specifies the ramp length (measured in codons). If RAMP_LEN
 SLOWDOWN_RATE 	   --->	specifies the ribosomes slowdown rate on the ramp (it is a percentage: for example, 70 means that the speed of the ribosomes is reduced by 				70%). If RAMP_LENGTH is set equal to 0, SLOWDOWN_RATE will not affect the simulation
 WIDTH_BIN 	   --->	specifies the width of the bin for the mRNA length distribution 
 
-
-
-
-********* Input files *********
-
+### Input files
 
 The first input file must contain for each transcript TWO lines: the first reporting (in this order) the gene ID, the transcript level, the protein amount, the protein ID and the transcript ID; the second reporting the mRNA sequence. An example:
 
@@ -74,7 +52,6 @@ ATGCTGCTGCACCTGTGTAGTGTGAAGAATCTGTACCAGAACAGGTTTTTAGGCCTGGCCGCCATGGCGTCTCCTTCTAG
 
 Note that if the protein amounts are not available, the corresponding column can be omitted. In this case, in the variable PROTEIN_INPUT (see the Settings section above) has to be set equal to 0.
 
-
 The presence of a second input file depends on the parameter CODON_USAGE in the "user definition part" (see the Settings section above): if it is set equal to 0, an input file containing the 64 triplets and the corresponding codon usage values (without any header) must be present in the same folder of RiboAbacus.c. The following lines show an example of the organization of the file:
 
 CUG	39.6
@@ -86,11 +63,7 @@ AUU	16
 
 No specific order of the triplets is required.
 
-
-
-
-********* Output files *********
-
+### Output files
 
 RiboAbacus creates 3 output:
 
