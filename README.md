@@ -22,13 +22,13 @@ Lauria F, Tebaldi T, Lunelli L, Struffi P, Gatto P, Pugliese A, Brigotti M, Mont
 
 ### Before starting
 
-Place ?RiboAbacus.c? in the same folder of the .txt file(s) that will be used as input (see below for more details on the input files).
+Place RiboAbacus.c in the same folder of the .txt file(s) that will be used as input (see below for more details on the input files).
 
 ------------------------------------------------------------------------
 
 ### Compile and execute RiboAbacus
 
-Using a Linux command-line interface: open a bash shell and type the following line to compile 'RiboAbacus.c' and generate the executable file (that will be placed in the same folder of 'RiboAbacus.c')
+Using a Linux command-line interface: open a bash shell and type the following line to compile RiboAbacus.c and generate the executable file (that will be placed in the same folder of 'RiboAbacus.c')
 
      gcc -o RiboAbacus RiboAbacus.c -lm
 
@@ -45,12 +45,12 @@ to run RiboAbacus.
 
 To set RiboAbacus options, a "user definition part" is present in 'RiboAbacus.c'. The user can modify the following parameters:
 
-* CODON_USAGE 	   --->	specifies the organism codon usage bias: 1 for Homo Sapiens, 2 for Mus Musculus, 3 for Saccharomyces Cerevisiae and 0 if an input file with 				custom codon usage is given by the user (see the input files section below)
-* PROTEIN_INPUT 	   --->	assumes only values 0 and 1: 0 if the input file with the list of transcripts (see the input files section below) does not contain data 			related to protein amounts, 1 otherwise
-* RAMP_HYOUTHESIS	   --->	assumes only values 0 and 1: 0 if the ramp hypothesis is not considered, 1 otherwise
-* RAMP_LENGTH 	   --->	specifies the ramp length (measured in codons). If RAMP_LENGTH is set equal to 0, RAMP_LENGTH will not affect the simulation
-* SLOWDOWN_RATE 	   --->	specifies the ribosomes slowdown rate on the ramp (it is a percentage: for example, 70 means that the speed of the ribosomes is reduced by 				70%). If RAMP_LENGTH is set equal to 0, SLOWDOWN_RATE will not affect the simulation
-* WIDTH_BIN 	   --->	specifies the width of the bin for the mRNA length distribution 
+*    CODON_USAGE    specifies the organism codon usage bias: 1 for Homo Sapiens, 2 for Mus Musculus, 3 for Saccharomyces Cerevisiae and 0 if an input file with 				custom codon usage is given by the user (see the input files section below)
+*    PROTEIN_INPUT  assumes only values 0 and 1: 0 if the input file with the list of transcripts (see the input files section below) does not contain data 			related to protein amounts, 1 otherwise
+*    RAMP_HYPOTHESIS     assumes only values 0 and 1: 0 if the ramp hypothesis is not considered, 1 otherwise
+*    RAMP_LENGTH  specifies the ramp length (measured in codons). If RAMP_LENGTH is set equal to 0, RAMP_LENGTH will not affect the simulation
+*    SLOWDOWN_RATE  specifies the ribosomes slowdown rate on the ramp (it is a percentage: for example, 70 means that the speed of the ribosomes is reduced by 				70%). If RAMP_LENGTH is set equal to 0, SLOWDOWN_RATE will not affect the simulation
+*    WIDTH_BIN specifies the width of the bin for the mRNA length distribution 
 
 ------------------------------------------------------------------------
 
@@ -84,24 +84,23 @@ No specific order of the triplets is required.
 
 RiboAbacus creates 3 output:
 
+1.   A file in which each row corresponds to an mRNA. In each line both general transcript information and predicted data provided by RiboAbacus are reported. More in detail each line contains:
+     -    gene ID;
+     -    mRNA level- protein amount (optional);
+     -    protein ID;
+     -    transcript ID;
+     -    transcript length;
+     -    estimated number of ribosome per transcript;
+     -    estimated number of ribosomes bound to the ramp region (if the ramp hypothesis was considered. Otherwise this value would be always 0);
+     -    % of GC content of the transcript;
+     -    % of GC content of the ramp region (if the ramp hypothesis was considered. Otherwise this value would be always 0);
+     -    Codon Adaptation Index of the transcript;
+     -    Codon Adaptation Index of the ramp region (if the ramp hypothesis was considered. Otherwise this value would be always 0);
+     -    ribosome occupancy (%) based on the estimated number of ribosome per transcript;
+     -    corrected translation efficiency based on the estimated number of ribosome per transcript;
+     -    exit flux.
 
-1. A file in which each row corresponds to an mRNA. In each line both general transcript information and predicted data provided by RiboAbacus are reported. More in detail each line contains:
-- gene ID;
-- mRNA level- protein amount (optional);
-- protein ID;
-- transcript ID;
-- transcript length;
-- estimated number of ribosome per transcript;
-- estimated number of ribosomes bound to the ramp region (if the ramp hypothesis was considered. Otherwise this value would be always 0);
-- % of GC content of the transcript;
-- % of GC content of the ramp region (if the ramp hypothesis was considered. Otherwise this value would be always 0);
-- Codon Adaptation Index of the transcript;
-- Codon Adaptation Index of the ramp region (if the ramp hypothesis was considered. Otherwise this value would be always 0);
-- ribosome occupancy (%) based on the estimated number of ribosome per transcript;
-- corrected translation efficiency based on the estimated number of ribosome per transcript;
-- exit flux.
-
-The following lines show an example of the organization of the file (ramp hypothesis: ramp length 50 codons, ribosome slowdown rate 70%):
+     The following lines show an example of the organization of the file (ramp hypothesis: ramp length 50 codons, ribosome slowdown rate 70%):
 
      gene ID	mRNA level	protein amount	protein ID	transcript ID	"transcript
      length"	# ribosomes	"# ribosome
@@ -114,9 +113,7 @@ The following lines show an example of the organization of the file (ramp hypoth
      ENSG00000004455	3493.550049	64600.76	ENSP00000346921	ENST00000354858	720	8	3	52.361111	62	0.79733	0.791008	31.911211	2287.06706	82
      ENSG00000006712	8962.950195	182.54	ENSP00000221265	ENST00000221265	1596	15	3	54.699249	72	0.832251	0.887574	27.7791	2894.230964	221
 
-
-
-2. A file containing the frequencies of the number of ribosomes per transcript predicted by the model, useful to produce a number of ribosomes per transcript distribution that takes into account the transcript level. The following lines show an example of the organization of the file:
+2.   A file containing the frequencies of the number of ribosomes per transcript predicted by the model, useful to produce a number of ribosomes per transcript distribution that takes into account the transcript level. The following lines show an example of the organization of the file
 
      rib/tr	events	freq_int
      0	0	0.000000
@@ -127,7 +124,7 @@ The following lines show an example of the organization of the file (ramp hypoth
      5	12859	0.050386
      ...
 
-3. A file containing information useful to generate a transcript length distribution with specified width of the bins and that takes into account the transcript level. The following lines show an example of the organization of the file:
+3.   A file containing information useful to generate a transcript length distribution with specified width of the bins and that takes into account the transcript level. The following lines show an example of the organization of the file:
 
      length	events	freq_int
      0	544	0.000710
