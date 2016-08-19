@@ -10,6 +10,8 @@ Please cite the following article when using `RiboAbacus`:
 
 Lauria F, Tebaldi T, Lunelli L, Struffi P, Gatto P, Pugliese A, Brigotti M, Montanaro L, Ciribilli Y, Inga A, Quattrone A, Sanguinetti G, Viero G. ***RiboAbacus: a model trained on polyribosome images predicts ribosome density and translational efficiency from mammalian transcriptomes.*** *Nucleic Acids Res. 2015 Dec 15;43(22):e153*
 
+[![doi](https://img.shields.io/badge/DOI-10.1093%2Fnar%2Fgkv781-green.svg?style=flat)](http://dx.doi.org/10.1093/nar/gkv781)
+
 ### Before starting
 
 Place RiboAbacus.c in the same folder of the .txt file(s) that will be used as input (see below for more details on the input files).
