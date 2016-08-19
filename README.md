@@ -1,7 +1,6 @@
 # RiboAbacus    
 
 Estimation of the number of ribosomes per mRNA
-
 ------------------------------------------------------------------------
 
 ### Description
@@ -115,14 +114,14 @@ RiboAbacus creates 3 output:
 
 2.   A file containing the frequencies of the number of ribosomes per transcript predicted by the model, useful to produce a number of ribosomes per transcript distribution that takes into account the transcript level. The following lines show an example of the organization of the file
 
-               rib/tr	events	freq_int
-               0	0	0.000000
-               1	0	0.000000
-               2	1619	0.006346
-               3	1605	0.006291
-               4	2097	0.008217
-               5	12859	0.050386
-               ...
+          rib/tr	events	freq_int
+          0	0	0.000000
+          1	0	0.000000
+          2	1619	0.006346
+          3	1605	0.006291
+          4	2097	0.008217
+          5	12859	0.050386
+          ...
 
 3.   A file containing information useful to generate a transcript length distribution with specified width of the bins and that takes into account the transcript level. The following lines show an example of the organization of the file:
 
