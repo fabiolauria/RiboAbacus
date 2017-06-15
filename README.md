@@ -1,4 +1,4 @@
-![riboAbacus](https://github.com/fabiolauria/RiboAbacus/riboabacus.png)
+![riboAbacus](https://github.com/fabiolauria/RiboAbacus/blob/master/riboabacus.png)
 
 # RiboAbacus    
 
