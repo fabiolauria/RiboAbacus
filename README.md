@@ -1,3 +1,5 @@
+![riboAbacus](https://github.com/fabiolauria/RiboAbacus/riboabacus.png)
+
 # RiboAbacus    
 
 Estimation of the number of ribosomes per mRNA
