@@ -1,6 +1,6 @@
 language: c
 
-script: RiboAbacus.c
+script: gcc -o RiboAbacus RiboAbacus.c -lm
 
 notifications:
   email:
